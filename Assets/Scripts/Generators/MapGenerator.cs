@@ -6,7 +6,10 @@ public class MapGenerator : MonoBehaviour
 {
     public Texture2D texture;
 
+    public GameObject[] trees;
+
     public bool autoUpdate;
+    public float heightMultiplier = 1.0f;
 
     float[,] DecodeFloatTexture()
     {
@@ -31,6 +34,6 @@ public class MapGenerator : MonoBehaviour
 
         float[,] heightMap = DecodeFloatTexture();
 
-        display.DrawMesh(MeshGenerator.GenerateTerrainMesh(heightMap), texture);
+        display.DrawMesh(MeshGenerator.GenerateTerrainMesh(heightMap, heightMultiplier), texture);
     }
 }
