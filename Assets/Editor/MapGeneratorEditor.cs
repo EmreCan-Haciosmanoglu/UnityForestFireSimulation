@@ -23,5 +23,8 @@ public class MapGeneratorEditor : Editor
         {
             mapGen.GenerateMap();
         }
+
+        if (GUILayout.Button("Set Random Tree On Fire"))
+            mapGen.SetRandomTreeOnFire();
     }
 }

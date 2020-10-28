@@ -43,6 +43,31 @@ PrefabInstance:
       propertyPath: m_Name
       value: FireEmitter
       objectReference: {fileID: 0}
+    - target: {fileID: 2244456353514689918, guid: 63c4c6c0d23bda14c8ab9ad2ef4f98f8,
+        type: 3}
+      propertyPath: ShapeModule.type
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2244456353514689918, guid: 63c4c6c0d23bda14c8ab9ad2ef4f98f8,
+        type: 3}
+      propertyPath: ShapeModule.arc.mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2244456353514689918, guid: 63c4c6c0d23bda14c8ab9ad2ef4f98f8,
+        type: 3}
+      propertyPath: ShapeModule.alignToDirection
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2244456353514689918, guid: 63c4c6c0d23bda14c8ab9ad2ef4f98f8,
+        type: 3}
+      propertyPath: ShapeModule.arc.value
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 2244456353514689918, guid: 63c4c6c0d23bda14c8ab9ad2ef4f98f8,
+        type: 3}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9106343494287454451, guid: 63c4c6c0d23bda14c8ab9ad2ef4f98f8,
         type: 3}
       propertyPath: m_LocalPosition.x
