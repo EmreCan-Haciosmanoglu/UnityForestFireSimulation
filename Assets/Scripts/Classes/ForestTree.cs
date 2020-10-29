@@ -15,6 +15,9 @@ public class ForestTree
     public float SpreadSpeed = 5f;
     public float SpreadRange = 0f;
 
+    private ParticleSystem.ShapeModule shape;
+    private ParticleSystem.EmissionModule emission;
+
     public ForestTree(GameObject tree, GameObject burntIcon, GameObject fire)
     {
         this.tree = tree;
@@ -22,6 +25,10 @@ public class ForestTree
         this.fire = fire;
         burntIcon.SetActive(false);
         fire.SetActive(false);
+
+        ParticleSystem particleSystem = fire.GetComponent<ParticleSystem>();
+        shape = particleSystem.shape;
+        emission = particleSystem.emission;
     }
     
 
@@ -65,6 +72,11 @@ public class ForestTree
         float dt = Time.deltaTime;
         BurnTime -= dt;
         SpreadRange += dt * SpreadSpeed;
+
+        shape.radius = (SpreadRange + 1f) / 10f;
+        emission.rateOverTime = (SpreadRange + 1f) * 15;
+
+
         if (BurnTime < 0f)
         {
             Burnt = true;
