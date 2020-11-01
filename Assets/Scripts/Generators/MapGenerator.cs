@@ -4,9 +4,18 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
-    public Texture2D texture;
+    public Texture2D terrainMap;
+    public Texture2D roadMap;
+
 
     public GameObject[] trees;
+    [Range(1f,30f)]
+    public float BurnTime = 15f;
+    [Range(.5f, 5f)]
+    public float SpreadSpeed = 2f;
+    [Range(1, 10)]
+    public int passes = 3;
+    public bool level = true;
     [Range(0f, 1f)]
     public float percentage = 0.01f;
     public bool autoUpdate = true;
@@ -26,7 +35,7 @@ public class MapGenerator : MonoBehaviour
         treesOnTheScene[randomIndex].SetOnFire();
     }
 
-    float[,] DecodeFloatTexture()
+    float[,] DecodeFloatTexture(Texture2D texture)
     {
         Color[] colors = texture.GetPixels();
         // HERE YOU CAN GET ALL 4 FLOATS OUT OR JUST THOSE YOU NEED.
@@ -54,21 +63,23 @@ public class MapGenerator : MonoBehaviour
 
         MapDisplay display = FindObjectOfType<MapDisplay>();
 
-        float[,] heightMap = DecodeFloatTexture();
-        display.DrawMesh(MeshGenerator.GenerateTerrainMesh(heightMap), texture);
+        float[,] heightMap = DecodeFloatTexture(terrainMap);
+        float[,] roadMask= DecodeFloatTexture(roadMap);
+        display.DrawMesh(MeshGenerator.GenerateTerrainMesh(heightMap, roadMask, passes,level), terrainMap);
 
         List<Temp> result = ForestGenerator.GenerateTreeLocations(percentage, heightMap, trees.Length);
         for (int i = 0; i < result.Count; i++)
         {
             Temp temp = result[i];
-
+            if (roadMask[(int)temp.pos.x, (int)temp.pos.z] > .5f)
+                continue;
             GameObject parent = Instantiate(emptyGameObjectPrefab, temp.pos, Quaternion.identity, TreesParent.transform);
 
             GameObject tree = Instantiate(trees[temp.type].gameObject, parent.transform);
             GameObject burntIcon = Instantiate(burntIconPrefab.gameObject, parent.transform);
             GameObject fire = Instantiate(firePrefab.gameObject, parent.transform);
 
-            ForestTree forestTree = new ForestTree(tree, burntIcon, fire);
+            ForestTree forestTree = new ForestTree(tree, burntIcon, fire, BurnTime, SpreadSpeed);
             treesOnTheScene.Add(forestTree);
         }
         foreach (ForestTree forestTree in treesOnTheScene)
@@ -86,9 +97,9 @@ public class MapGenerator : MonoBehaviour
 
     public void Update()
     {
-        foreach(ForestTree forestTree in treesOnFire)
+        for (int i = 0; i < treesOnFire.Count; i++)
         {
-            forestTree.Update();
+            treesOnFire[i].Update();
         }
     }
 }

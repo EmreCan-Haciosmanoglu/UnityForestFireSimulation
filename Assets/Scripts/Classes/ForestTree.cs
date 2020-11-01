@@ -11,18 +11,21 @@ public class ForestTree
     private bool Burnt = false;
     private bool OnFire = false;
 
-    public float BurnTime = 5f;
-    public float SpreadSpeed = 5f;
+    public float BurnTime;
+    public float SpreadSpeed;
     public float SpreadRange = 0f;
 
     private ParticleSystem.ShapeModule shape;
     private ParticleSystem.EmissionModule emission;
 
-    public ForestTree(GameObject tree, GameObject burntIcon, GameObject fire)
+    public ForestTree(GameObject tree, GameObject burntIcon, GameObject fire, float burnTime, float spreadSpeed)
     {
         this.tree = tree;
         this.burntIcon = burntIcon;
         this.fire = fire;
+        this.BurnTime = burnTime;
+        this.SpreadSpeed = spreadSpeed;
+
         burntIcon.SetActive(false);
         fire.SetActive(false);
 
