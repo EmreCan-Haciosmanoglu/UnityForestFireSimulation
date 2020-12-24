@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -52,6 +53,39 @@ public static class MeshGenerator
 
         return meshData;
     }
+
+    public static MeshData CombineMeshData(Mesh m1, Mesh m2, Vector3 position, Vector3 scale, out bool next)
+    {
+        Vector3 scaledPosition = new Vector3(position.x / scale.x, position.y / scale.y, position.z / scale.z);
+        int m1vl = m1.vertices.Length;
+        int m1uvl = m1.uv.Length;
+        int m1tl = m1.triangles.Length;
+
+        int m2vl = m2.vertices.Length;
+        int m2uvl = m2.uv.Length;
+        int m2tl = m2.triangles.Length;
+        Debug.Log(position);
+        MeshData meshData = new MeshData(m1vl + m2vl, m1uvl + m2uvl, m1tl + m2tl);
+
+        Array.Copy(m1.vertices, meshData.vertices, m1vl);
+
+        Vector3[] vs = m2.vertices;
+        //meshData.vertices[m1vl - 1] = vs[0] + scaledPosition;
+        for (int i = 0; i < m2vl; i++)
+            meshData.vertices[i + m1vl] = vs[i] + scaledPosition;
+
+        Array.Copy(m1.uv, meshData.uvs, m1uvl);
+        Array.Copy(m2.uv, 0, meshData.uvs, m1vl, m2uvl);
+
+        Array.Copy(m1.triangles, meshData.triangles, m1tl);
+
+        int[] ts = m2.triangles;
+        for (int i = 0; i < m2tl; i++)
+            meshData.triangles[i + m1tl] = ts[i] + m1vl;
+
+        next = meshData.vertices.Length > 20000;
+        return meshData;
+    }
 }
 
 public class MeshData
@@ -67,6 +101,13 @@ public class MeshData
         vertices = new Vector3[meshWidth * meshHeight];
         uvs = new Vector2[meshWidth * meshHeight];
         triangles = new int[(meshWidth - 1) * (meshHeight - 1) * 6];
+    }
+
+    public MeshData(int vSize, int uvSize, int tSize)
+    {
+        vertices = new Vector3[vSize];
+        uvs = new Vector2[uvSize];
+        triangles = new int[tSize];
     }
 
     public void AddTriangle(int a, int b, int c)

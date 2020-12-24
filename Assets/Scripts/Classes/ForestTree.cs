@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ForestTree
 {
-    public GameObject tree;
     public GameObject burntIcon;
     public GameObject fire;
     public List<ForestTree> closestTrees = new List<ForestTree>();
@@ -18,9 +17,8 @@ public class ForestTree
     private ParticleSystem.ShapeModule shape;
     private ParticleSystem.EmissionModule emission;
 
-    public ForestTree(GameObject tree, GameObject burntIcon, GameObject fire, float burnTime, float spreadSpeed)
+    public ForestTree(GameObject burntIcon, GameObject fire, float burnTime, float spreadSpeed)
     {
-        this.tree = tree;
         this.burntIcon = burntIcon;
         this.fire = fire;
         this.BurnTime = burnTime;
@@ -41,7 +39,7 @@ public class ForestTree
         {
             if(!ctree.IsOnFire())
             {
-                float dist = Vector3.Distance(tree.transform.position, ctree.tree.transform.position);
+                float dist = Vector3.Distance(burntIcon.transform.position, ctree.burntIcon.transform.position);
                 if (dist < SpreadRange)
                     ctree.SetOnFire();
             }
